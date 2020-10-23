@@ -16,8 +16,8 @@ class ModulBuilder: Builder {
     static func createMainModule() -> UIViewController {
         let person = Person(firstName: "Jim", lastName: "Kery")
         let view = ViewController()
-        let presenter = MainPresenter(view: view as! MainViewProtocol, person: person)
+        let presenter = MainPresenter(view: view, person: person)
+        view.presenter = presenter
+        return view
     }
-    
-    
 }

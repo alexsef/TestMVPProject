@@ -9,26 +9,44 @@
 import XCTest
 @testable import TestMVPProject
 
-class TestMVPProjectTests: XCTestCase {
+class MockView: MainViewProtocol {
+    var titleTest: String?
+    
+    func setGreeting(greeting: String) {
+        self.titleTest = greeting
+    }
+}
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+class TestMVPProjectTests: XCTestCase {
+    var view: MockView!
+    var person: Person!
+    var presenter: MainPresenter!
+    
+    override func setUp() {
+        view = MockView()
+        person = Person(firstName: "foo", lastName: "bar")
+        presenter = MainPresenter(view: view, person: person)
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        view = nil
+        person = nil
+        presenter = nil
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testModuleIsNotNil() throws {
+        XCTAssertNotNil(view, "view is not nil")
+        XCTAssertNotNil(person, "person is not nil")
+        XCTAssertNotNil(presenter, "presenter is not nil")
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testView() {
+        presenter.showGreeting()
+        XCTAssertEqual(view.titleTest, "foo bar")
     }
-
+    
+    func testPersonModel() {
+        XCTAssertEqual(person.firstName, "foo")
+        XCTAssertEqual(person.lastName, "bar")
+    }
 }
