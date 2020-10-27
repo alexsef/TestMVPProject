@@ -32,6 +32,15 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let comment = presenter.comments?[indexPath.row]
+        let detailVC = ModulBuilder.createDetailModule(comment: comment)
+        navigationController?.pushViewController(detailVC, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
 extension ViewController: MainViewProtocol {
     func success() {
         tableView.reloadData()
